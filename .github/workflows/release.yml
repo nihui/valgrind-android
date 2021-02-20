@@ -23,6 +23,7 @@ jobs:
         patch -p1 -i ../valgrind-3.16.1-ndk-r19-minimal_setjmp.patch
         patch -p1 -i ../valgrind-3.16.1-fix-build-new-ndk.patch
         sed -i -e 's! -g ! !g' -e 's! -g$!!g' Makefile.in
+        sed -i -e 's! -g ! !g' -e 's! -g$!!g' Makefile.all.am
     - name: build-arm64-v8a
       run: |
         cd valgrind-${{ env.VALGRIND_VERSION }}
