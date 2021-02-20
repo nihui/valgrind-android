@@ -4,8 +4,9 @@
 ![release](https://github.com/nihui/valgrind-android/workflows/release/badge.svg)
 ![download](https://img.shields.io/github/downloads/nihui/valgrind-android/total.svg)
 
-This project provides the valgrind binary package for android arm64-v8a.
+✔️ This project provides the valgrind binary package for **Android arm64-v8a**.
 
+✔️ All the binaries are compiled from source on github action, **no virus**, **no backdoor**, **no secret code**.
 
 # Download
 
