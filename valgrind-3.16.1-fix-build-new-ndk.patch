@@ -1,0 +1,22 @@
+diff -Nuarp valgrind-3.16.1/coregrind/m_coredump/coredump-elf.c valgrind-3.16.1.fix/coregrind/m_coredump/coredump-elf.c
+--- valgrind-3.16.1/coregrind/m_coredump/coredump-elf.c	2019-12-27 22:51:44.000000000 +0800
++++ valgrind-3.16.1.fix/coregrind/m_coredump/coredump-elf.c	2021-02-20 23:25:52.476653535 +0800
+@@ -137,18 +137,6 @@ static void fill_phdr(ESZ(Phdr) *phdr, c
+    phdr->p_align = VKI_PAGE_SIZE;
+ }
+ 
+-#if defined(VGPV_arm_linux_android) || defined(VGPV_x86_linux_android) \
+-    || defined(VGPV_mips32_linux_android)
+-/* Android's libc doesn't provide a definition for this.  Hence: */
+-typedef
+-   struct {
+-      Elf32_Word n_namesz;
+-      Elf32_Word n_descsz;
+-      Elf32_Word n_type;
+-   }
+-   Elf32_Nhdr;
+-#endif
+-
+ struct note {
+    struct note *next;
+    ESZ(Nhdr) note;
