@@ -22,8 +22,6 @@ jobs:
         cd valgrind-${{ env.VALGRIND_VERSION }}
         patch -p1 -i ../valgrind-3.16.1-ndk-r19-minimal_setjmp.patch
         patch -p1 -i ../valgrind-3.16.1-fix-build-new-ndk.patch
-        sed -i -e 's! -g ! !g' -e 's! -g$!!g' Makefile.in
-        sed -i -e 's! -g ! !g' -e 's! -g$!!g' Makefile.all.am
     - name: build-arm64-v8a
       run: |
         cd valgrind-${{ env.VALGRIND_VERSION }}
@@ -38,6 +36,10 @@ jobs:
         ./configure --prefix=/data/local/tmp/valgrind --host=aarch64-unknown-linux --target=aarch64-unknown-linux --with-tmpdir=/data/local/tmp
         make -j2
         make install DESTDIR=`pwd`/install
+    - name: strip-debug
+      run: |
+        cd valgrind-${{ env.VALGRIND_VERSION }}/install
+        find . -type f | xargs -i sh -c "$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip -g {} || true"
     - name: package
       run: |
         mkdir ${{ env.PACKAGENAME }}
