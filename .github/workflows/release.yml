@@ -8,20 +8,24 @@ on: [push, pull_request]
 jobs:
   android:
     runs-on: ubuntu-latest
+    env:
+      VALGRIND_VERSION: 3.16.1
+      PACKAGENAME: valgrind-3.16.1-android
     steps:
     - uses: actions/checkout@v2
     - name: ndk-fix-debug
       run: sed -i -e '/^  -g$/d' $ANDROID_HOME/ndk-bundle/build/cmake/android.toolchain.cmake
     - name: valgrind-source
       run: |
-        wget -q https://sourceware.org/pub/valgrind/valgrind-3.16.1.tar.bz2
-        tar -xf valgrind-3.16.1.tar.bz2
-        cd valgrind-3.16.1
+        wget -q https://sourceware.org/pub/valgrind/valgrind-${{ env.VALGRIND_VERSION }}.tar.bz2
+        tar -xf valgrind-${{ env.VALGRIND_VERSION }}.tar.bz2
+        cd valgrind-${{ env.VALGRIND_VERSION }}
         patch -p1 -i ../valgrind-3.16.1-ndk-r19-minimal_setjmp.patch
         patch -p1 -i ../valgrind-3.16.1-fix-build-new-ndk.patch
+        sed -e 's! -g ! !g' -e 's! -g$!!g' Makefile.in
     - name: build-arm64-v8a
       run: |
-        cd valgrind-3.16.1
+        cd valgrind-${{ env.VALGRIND_VERSION }}
 
         export AR=$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar
         export LD=$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ld
@@ -33,4 +37,13 @@ jobs:
         ./configure --prefix=/data/local/tmp/valgrind --host=aarch64-unknown-linux --target=aarch64-unknown-linux --with-tmpdir=/data/local/tmp
         make -j2
         make install DESTDIR=`pwd`/install
-
+    - name: package
+      run: |
+        mkdir ${{ env.PACKAGENAME }}
+        cp -rf valgrind-${{ env.VALGRIND_VERSION }}/install/data/local/tmp/valgrind ${{ env.PACKAGENAME }}/
+        zip -9 -r ${{ env.PACKAGENAME }}.zip ${{ env.PACKAGENAME }}
+    - name: upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.PACKAGENAME }}
+        path: ${{ env.PACKAGENAME }}.zip
