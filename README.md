@@ -35,7 +35,7 @@ valgrind/bin/valgrind --tool=callgrind ./benchncnn 4 1 0 -1 0
 * Pull valgrind output files and visualize it
 ```
 adb pull /data/local/tmp/callgrind.out.9519
-kcachgrind callgrind.out.9519
+kcachegrind callgrind.out.9519
 ```
 
 ![callgrind](https://raw.githubusercontent.com/nihui/valgrind-android/master/vg-callgrind.png)
