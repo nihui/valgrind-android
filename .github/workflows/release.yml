@@ -54,10 +54,8 @@ jobs:
         mkdir ${{ env.PACKAGENAME }}
         cp -rf valgrind-${{ env.VALGRIND_VERSION }}/install/data/local/tmp/valgrind ${{ env.PACKAGENAME }}/
         rm -rf ${{ env.PACKAGENAME }}/valgrind/include
-        rm -rf ${{ env.PACKAGENAME }}/valgrind/libexec
         rm -rf ${{ env.PACKAGENAME }}/valgrind/share
         rm -rf ${{ env.PACKAGENAME }}/valgrind/lib/pkgconfig
-        rm -rf ${{ env.PACKAGENAME }}/valgrind/lib/lib*.a
         zip -9 -r ${{ env.PACKAGENAME }}.zip ${{ env.PACKAGENAME }}
     - name: upload
       uses: actions/upload-artifact@v2
