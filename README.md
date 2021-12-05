@@ -14,14 +14,14 @@
 
 arm64-v8a build with ndk r21d and android api 21
 
-* [valgrind-3.16.1-android.zip](https://github.com/nihui/valgrind-android/releases/download/v1/valgrind-3.16.1-android.zip)
+* [valgrind-3.17.0-android.zip](https://github.com/nihui/valgrind-android/releases/download/v2/valgrind-3.17.0-android.zip)
 
 
 # Usage
 
 * Extract archive and push files to android device
 ```
-unzip -q valgrind-3.16.1-android.zip
+unzip -q valgrind-3.17.0-android.zip
 adb push valgrind /data/local/tmp/
 adb shell
 ```
